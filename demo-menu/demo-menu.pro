@@ -28,9 +28,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    mainwindow.cpp
 
-HEADERS +=
+HEADERS += \
+    mainwindow.h \
+    mainwindow_p.h
 
 
 # Default rules for deployment.

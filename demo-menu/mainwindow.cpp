@@ -37,17 +37,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-
 #include "mainwindow.h"
+#include "mainwindow_p.h"
 
-#include <QApplication>
+#include <QMenu>
+#include <QStandardPaths>
 
-int main(int argc, char *argv[])
+MainWindowPrivate::MainWindowPrivate()
 {
-    QApplication a(argc, argv);
+    configPath = QStandardPaths::standardLocations(QStandardPaths::ConfigLocation).first();
+}
 
-    MainWindow w;
-    w.show();
+MainWindowPrivate::~MainWindowPrivate()
+{
 
-    return a.exec();
+}
+
+MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f)
+    : QWidget(*new MainWindowPrivate, parent, f)
+{
+
+}
+
+MainWindow::~MainWindow()
+{
+
+}
+
+MainWindow::MainWindow(MainWindowPrivate &dd, QWidget *parent, Qt::WindowFlags f)
+    : QWidget (dd, parent, f)
+{
+
+}
+
+void MainWindow::contextMenuEvent(QContextMenuEvent *event)
+{
+    QPoint pos = event->pos();
+
+    QMenu menu;
+    menu.addAction("action1");
+    menu.exec(pos);
 }

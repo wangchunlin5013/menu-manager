@@ -37,17 +37,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
-#include "mainwindow.h"
+#include <QWidget>
 
-#include <QApplication>
+class MainWindowPrivate;
 
-int main(int argc, char *argv[])
+class MainWindow : public QWidget
 {
-    QApplication a(argc, argv);
+    Q_OBJECT
+public:
+    explicit MainWindow(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+    ~MainWindow();
 
-    MainWindow w;
-    w.show();
+protected:
+    MainWindow(MainWindowPrivate &dd, QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
-    return a.exec();
-}
+    void contextMenuEvent(QContextMenuEvent *event) override;
+
+private:
+    Q_DECLARE_PRIVATE(MainWindow)
+};
+
+#endif // MAINWINDOW_H
