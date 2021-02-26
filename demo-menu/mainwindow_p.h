@@ -44,13 +44,27 @@
 
 #include <private/qwidget_p.h>
 
+enum ActionType { Unknow = 0, Action, Separator};
+struct ActionData{
+    ActionType type;
+    QString name;
+    QString icon;
+    QString tips;
+    QString commd;
+};
+
 class MainWindowPrivate : public QWidgetPrivate
 {
 public:
     explicit MainWindowPrivate();
     ~MainWindowPrivate();
 
+    void init();
+    void parseFile();
+
     QString configPath;
+    bool hasCustom = false;
+    QList<ActionData> actiondatas;
 
 private:
     Q_DECLARE_PUBLIC(MainWindow)
