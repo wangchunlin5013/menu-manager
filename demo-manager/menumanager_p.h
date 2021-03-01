@@ -37,17 +37,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
+#ifndef MENUMANAGER_P_H
+#define MENUMANAGER_P_H
 
-#include "mainwindow.h"
+#include "menumanager.h"
+#include "../common/dataDefine.h"
 
-#include <QApplication>
+#include <private/qobject_p.h>
 
-int main(int argc, char *argv[])
+class MenuManagerPrivate : public QObjectPrivate
 {
-    QApplication a(argc, argv);
+    Q_DECLARE_PUBLIC(MenuManager)
+public:
+    MenuManagerPrivate();
+    ~MenuManagerPrivate();
 
-    MainWindow w;
-    w.show();
+    void parseFile();
 
-    return a.exec();
-}
+    QString configPath;
+    bool hasCustom = true;
+
+    QList<ActionData> sysMenus;
+    QList<ActionData> userMenus;
+};
+
+#endif // MENUMANAGER_P_H

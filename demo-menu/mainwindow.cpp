@@ -128,11 +128,10 @@ MainWindow::MainWindow(MainWindowPrivate &dd, QWidget *parent, Qt::WindowFlags f
 
 void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 {
+    Q_UNUSED(event)
     Q_D(MainWindow);
 
-    QPoint pos = event->pos();
     QMenu menu;
-
     if (d->hasCustom) {
         for (auto action : d->actiondatas) {
             if (action.type == ActionType::Action) {
@@ -145,7 +144,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
             }
         }
     } else {
-        // TODO:加载所有菜单
+        // TODO:根据规范或系统默认实现方式，加载所有菜单
         menu.addAction(QString("testAction1"));
         menu.addAction(QString("testAction2"));
         menu.addSeparator();
@@ -154,8 +153,8 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
     }
 
     connect(&menu, &QMenu::triggered, this, [=](QAction *action) {
-        qDebug()<<"trigger action:"<<action->data();
+        qDebug()<<"trigger action:"<<action->text();
     });
 
-    menu.exec(pos);
+    menu.exec(QCursor::pos());
 }

@@ -28,11 +28,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+    mainwindow.cpp \
+    menumanager.cpp
 
-HEADERS +=
+HEADERS += \
+    mainwindow.h \
+    mainwindow_p.h \
+    menumanager.h \
+    menumanager_p.h
 
-
+#include(../common/common.pri)
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

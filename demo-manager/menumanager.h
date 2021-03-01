@@ -37,17 +37,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
+#ifndef MENUMANAGER_H
+#define MENUMANAGER_H
 
-#include "mainwindow.h"
+#include <QObject>
 
-#include <QApplication>
+class MenuManagerPrivate;
 
-int main(int argc, char *argv[])
+class MenuManager : public QObject
 {
-    QApplication a(argc, argv);
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(MenuManager)
+public:
+    explicit MenuManager(QObject *parent = nullptr);
 
-    MainWindow w;
-    w.show();
+    void init();
+    bool loadSysMenu();
+    bool loadUserMenu();
 
-    return a.exec();
-}
+protected:
+    MenuManager(MenuManagerPrivate &dd, QObject *parent = nullptr);
+};
+
+#endif // MENUMANAGER_H

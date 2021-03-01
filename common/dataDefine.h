@@ -37,17 +37,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
+#ifndef DATADEFINE_H
+#define DATADEFINE_H
 
-#include "mainwindow.h"
+#include <QString>
 
-#include <QApplication>
+enum ActionType { Unknow = 0, Action, Separator};
+struct ActionData{
+    ActionType type;
+    QString name;
+    QString icon;
+    QString tips;
+    QString commd;
+};
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
-
-    MainWindow w;
-    w.show();
-
-    return a.exec();
-}
+#endif // DATADEFINE_H

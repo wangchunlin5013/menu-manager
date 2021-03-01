@@ -37,17 +37,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-
 #include "mainwindow.h"
+#include "mainwindow_p.h"
 
-#include <QApplication>
-
-int main(int argc, char *argv[])
+MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags f)
+  : QWidget(*new MainWindowPrivate, parent, f)
 {
-    QApplication a(argc, argv);
 
-    MainWindow w;
-    w.show();
+}
 
-    return a.exec();
+MainWindow::MainWindow(MainWindowPrivate &dd, QWidget *parent, Qt::WindowFlags f)
+    :QWidget(dd, parent, f)
+{
+
 }
