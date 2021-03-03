@@ -41,24 +41,40 @@
 #define MAINWINDOW_P_H
 
 #include "mainwindow.h"
+#include "userlistdelegate.h"
+#include "userlistmodel.h"
 
 #include <private/qwidget_p.h>
-
-enum ActionType { Unknow = 0, Action, Separator};
-struct ActionData{
-    ActionType type;
-    QString name;
-    QString icon;
-    QString tips;
-    QString commd;
-};
+#include <QListView>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 class MainWindowPrivate : public QWidgetPrivate
 {
     Q_DECLARE_PUBLIC(MainWindow)
 public:
-    explicit MainWindowPrivate(){}
-    ~MainWindowPrivate(){}
+    explicit MainWindowPrivate();
+    ~MainWindowPrivate();
+
+    QListView *userView             = nullptr;
+    UserListModel *userModel        = nullptr;
+    UserListDelegate *userDelegate  = nullptr;
+
+    QListWidget *allWidget          = nullptr;
+
+    QLabel *allActionsTitle         = nullptr;
+    QLabel *userActionsTitle        = nullptr;
+
+    QPushButton *addToUser          = nullptr;
+    QPushButton *delFromUser        = nullptr;
+
+    QPushButton *moveUpBtn          = nullptr;
+    QPushButton *moveDownBtn        = nullptr;
+    QPushButton *delFromUserBtn     = nullptr;
+    QPushButton *insertSeparatorBtn = nullptr;
+    QPushButton *delSeparatorBtn    = nullptr;
+    QPushButton *saveAndQuit        = nullptr;
+    QPushButton *cancelAndQuit      = nullptr;
 };
 
 #endif // MAINWINDOW_P_H

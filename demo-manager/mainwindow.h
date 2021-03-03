@@ -41,6 +41,12 @@
 #define MAINWINDOW_H
 
 #include <QWidget>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QButtonGroup>
+#include <QPushButton>
+#include <QToolButton>
+#include <QLabel>
 
 class MainWindowPrivate;
 
@@ -50,6 +56,9 @@ class MainWindow : public QWidget
     Q_DECLARE_PRIVATE(MainWindow)
 public:
     explicit MainWindow(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+    ~MainWindow();
+
+    void init();
 
 signals:
 

@@ -37,32 +37,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-#ifndef MENUMANAGER_H
-#define MENUMANAGER_H
+#ifndef USERLISTMODEL_H
+#define USERLISTMODEL_H
 
-#include "../common/dataDefine.h"
+#include <QAbstractListModel>
 
-#include <QObject>
-
-class MenuManagerPrivate;
-
-class MenuManager : public QObject
+class UserListModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(MenuManager)
 public:
-    static MenuManager *instance();
-    const QList<ActionData> getAllMenus() const;
-    const QList<ActionData> getUserMenus() const;
+    enum Roles {
+        hasSeparator = Qt::UserRole + 100,
+        Text,
+        Tips
+    };
+    struct ModelData {
+        bool hasSeparator = false;
+        QString text;
+    };
+
+    explicit UserListModel();
+    ~UserListModel();
+
+    void initData();
+
+    QModelIndex parent(const QModelIndex &child) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+public:
+    void addMenu(const QString &text);
 
 private:
-    void init();
-    bool loadSysMenu();
-    bool loadUserMenu();
-
-protected:
-    explicit MenuManager(QObject *parent = nullptr);
-    MenuManager(MenuManagerPrivate &dd, QObject *parent = nullptr);
+    QList<ModelData> datas;
 };
 
-#endif // MENUMANAGER_H
+#endif // USERLISTMODEL_H

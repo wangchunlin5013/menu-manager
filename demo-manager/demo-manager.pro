@@ -30,13 +30,17 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     mainwindow.cpp \
-    menumanager.cpp
+    menumanager.cpp \
+    userlistmodel.cpp \
+    userlistdelegate.cpp
 
 HEADERS += \
     mainwindow.h \
     mainwindow_p.h \
     menumanager.h \
-    menumanager_p.h
+    menumanager_p.h \
+    userlistmodel.h \
+    userlistdelegate.h
 
 #include(../common/common.pri)
 # Default rules for deployment.

@@ -57,7 +57,7 @@ MenuManagerPrivate::~MenuManagerPrivate()
 
 void MenuManagerPrivate::parseFile()
 {
-    sysMenus.clear();
+    userMenus.clear();
 
     QSettings setting(configPath, QSettings::NativeFormat);
     QStringList groups = setting.childGroups();
@@ -92,6 +92,24 @@ MenuManager::MenuManager(QObject *parent)
     : QObject(*new MenuManagerPrivate, parent)
 {
     init();
+}
+
+MenuManager *MenuManager::instance()
+{
+    static MenuManager menuManager;
+    return &menuManager;
+}
+
+const QList<ActionData> MenuManager::getAllMenus() const
+{
+    const Q_D(MenuManager);
+    return d->sysMenus;
+}
+
+const QList<ActionData> MenuManager::getUserMenus() const
+{
+    const Q_D(MenuManager);
+    return d->userMenus;
 }
 
 void MenuManager::init()

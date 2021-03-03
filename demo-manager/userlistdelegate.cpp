@@ -37,32 +37,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-#ifndef MENUMANAGER_H
-#define MENUMANAGER_H
+#include "userlistdelegate.h"
+#include "userlistmodel.h"
 
-#include "../common/dataDefine.h"
+#include <QPainter>
 
-#include <QObject>
-
-class MenuManagerPrivate;
-
-class MenuManager : public QObject
+UserListDelegate::UserListDelegate()
 {
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(MenuManager)
-public:
-    static MenuManager *instance();
-    const QList<ActionData> getAllMenus() const;
-    const QList<ActionData> getUserMenus() const;
 
-private:
-    void init();
-    bool loadSysMenu();
-    bool loadUserMenu();
+}
 
-protected:
-    explicit MenuManager(QObject *parent = nullptr);
-    MenuManager(MenuManagerPrivate &dd, QObject *parent = nullptr);
-};
+UserListDelegate::~UserListDelegate()
+{
 
-#endif // MENUMANAGER_H
+}
+
+void UserListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyledItemDelegate::paint(painter, option, index);
+
+    if (index.data(UserListModel::Roles::hasSeparator).toBool()) {
+        QPoint leftPoint = option.rect.bottomLeft();
+        QPoint rightPoint = option.rect.bottomRight();
+        painter->drawLine(leftPoint, rightPoint);
+    }
+}
