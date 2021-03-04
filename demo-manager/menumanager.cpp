@@ -39,11 +39,13 @@
  */
 #include "menumanager.h"
 #include "menumanager_p.h"
+#include "../common/dataDefine.h"
 
 #include <QStandardPaths>
 #include <QDebug>
 #include <QFileInfo>
 #include <QSettings>
+#include <QString>
 
 MenuManagerPrivate::MenuManagerPrivate()
 {
@@ -58,6 +60,7 @@ MenuManagerPrivate::~MenuManagerPrivate()
 void MenuManagerPrivate::parseFile()
 {
     userMenus.clear();
+    userMenuTxts.clear();
 
     QSettings setting(configPath, QSettings::NativeFormat);
     QStringList groups = setting.childGroups();
@@ -68,24 +71,46 @@ void MenuManagerPrivate::parseFile()
     for (auto group : groups) {
         ActionData data;
         setting.beginGroup(group);
-        QString type = setting.value(QString("Type")).toString();
-        if (type == QString("Action")) {
+        QString type = setting.value(MENUTYPE).toString();
+        if (MENUTYPEACTION == type) {
             data.type = ActionType::Action;
-            data.name = setting.value(QString("Name")).toString();
-            data.icon = setting.value(QString("Icon")).toString();
-            data.tips = setting.value(QString("Tips")).toString();
-            data.commd = setting.value(QString("Commd")).toString();
-        } else if (type == QString("Separator")) {
+            data.name = setting.value(MENUNAME).toString();
+            data.icon = setting.value(MENUICON).toString();
+            data.tips = setting.value(MENUTIPS).toString();
+            data.commd = setting.value(MENUCOMMD).toString();
+            userMenus.append(data);
+            userMenuTxts.append(data.name);
+        } else if (MENUTYPESEPARATOR == type) {
             data.type = ActionType::Separator;
+            userMenus.append(data);
         } else {
             data.type = ActionType::Unknow;
         }
         setting.endGroup();
-        if (data.type != ActionType::Unknow) {
-            userMenus.append(data);
-        }
     }
-    qDebug()<<"=====actions count:"<<userMenus.count();
+}
+
+void MenuManagerPrivate::saveFile(const QList<ActionData> &menus)
+{
+    QSettings setting(configPath, QSettings::NativeFormat);
+    setting.clear();
+
+    userMenus = menus;
+    if (userMenus.isEmpty())
+        return;
+
+    for (int i=0; i<userMenus.count(); i++) {
+        QString group = MENUGROUP + QString("%1").arg(i);
+        QString type = userMenus.at(i).type == ActionType::Action ? MENUTYPEACTION : MENUTYPESEPARATOR;
+        setting.beginGroup(group);
+        setting.setValue(MENUTYPE, type);
+        setting.setValue(MENUNAME, userMenus.at(i).name);
+        setting.setValue(MENUICON, userMenus.at(i).icon);
+        setting.setValue(MENUTIPS, userMenus.at(i).tips);
+        setting.setValue(MENUCOMMD, userMenus.at(i).commd);
+        setting.endGroup();
+    }
+
 }
 
 MenuManager::MenuManager(QObject *parent)
@@ -106,10 +131,28 @@ const QList<ActionData> MenuManager::getAllMenus() const
     return d->sysMenus;
 }
 
+const QStringList MenuManager::getAllMenuTxts() const
+{
+    const Q_D(MenuManager);
+    return d->sysMenuTxts;
+}
+
 const QList<ActionData> MenuManager::getUserMenus() const
 {
     const Q_D(MenuManager);
     return d->userMenus;
+}
+
+const QStringList MenuManager::getUserMenuTxts() const
+{
+    const Q_D(MenuManager);
+    return d->userMenuTxts;
+}
+
+void MenuManager::saveUserMenus(const QList<ActionData> &userMenus)
+{
+    Q_D(MenuManager);
+    d->saveFile(userMenus);
 }
 
 void MenuManager::init()
@@ -124,6 +167,7 @@ bool MenuManager::loadSysMenu()
 
     // TODO:根据规范或系统默认实现方式，加载所有菜单
     d->sysMenus.clear();
+    d->sysMenuTxts.clear();
     for(int i=0; i<20; i++) {
         ActionData data;
         data.type = ActionType::Action;
@@ -131,6 +175,7 @@ bool MenuManager::loadSysMenu()
         data.tips = QString("this is test action %1").arg(i);
 
         d->sysMenus.append(data);
+        d->sysMenuTxts.append(data.name);
     }
     return true;
 }
@@ -155,7 +200,6 @@ bool MenuManager::loadUserMenu()
         d->userMenus.clear();
     }
     qDebug()<<"======hasCustom:"<<d->hasCustom;
-
 
     return true;
 }

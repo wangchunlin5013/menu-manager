@@ -43,7 +43,7 @@
 
 UserListModel::UserListModel()
 {
-    initData();
+    initDatas();
 }
 
 UserListModel::~UserListModel()
@@ -51,13 +51,19 @@ UserListModel::~UserListModel()
 
 }
 
-void UserListModel::initData()
+void UserListModel::initDatas()
 {
     datas.clear();
+    const QStringList allMenuTxts = MenuManager::instance()->getAllMenuTxts();
     const QList<ActionData> &userMenus = MenuManager::instance()->getUserMenus();
     for(int i=0; i<userMenus.count(); i++) {
         const ActionData &menu = userMenus.at(i);
         if (menu.type == ActionType::Action) {
+
+            // 确保所有菜单有效（即在所有菜单中存在该菜单)
+            if (!allMenuTxts.contains(menu.name))
+                continue;
+
             ModelData data;
             data.text = menu.name;
             datas.append(data);
@@ -106,5 +112,89 @@ void UserListModel::addMenu(const QString &text)
     beginInsertRows(QModelIndex(), datas.count(), datas.count() + 1);
     datas.append(menu);
     endInsertRows();
+}
+
+void UserListModel::delMenu(const QString &text)
+{
+    for (int i=0; i<datas.count(); ++i) {
+        if (text == datas.at(i).text) {
+            beginRemoveRows(QModelIndex(), i, i);
+            datas.removeAt(i);
+            endRemoveRows();
+            return;
+        }
+    }
+}
+
+void UserListModel::moveUpMenu(const QString &text)
+{
+    for (int i=0; i<datas.count(); ++i) {
+        if (text == datas.at(i).text && i > 0) {
+            beginResetModel();
+            ModelData tmpData = datas.at(i);
+            datas[i].hasSeparator = datas.at(i-1).hasSeparator;
+            datas[i].text = datas.at(i-1).text;
+            datas[i-1].hasSeparator = tmpData.hasSeparator;
+            datas[i-1].text = tmpData.text;
+
+            // 最后一个菜单项后面确保没有分隔符
+            if (i == datas.count()-1) {
+                datas[i].hasSeparator = false;
+            }
+
+            endResetModel();
+            return;
+        }
+    }
+}
+
+void UserListModel::moveDownMenu(const QString &text)
+{
+    for (int i=0; i<datas.count(); ++i) {
+        if (text == datas.at(i).text && i < datas.count()-1) {
+            beginResetModel();
+            ModelData tmpData = datas.at(i);
+            datas[i].hasSeparator = datas.at(i+1).hasSeparator;
+            datas[i].text = datas.at(i+1).text;
+            datas[i+1].hasSeparator = tmpData.hasSeparator;
+            datas[i+1].text = tmpData.text;
+
+            // 最后一个菜单项后面确保没有分隔符
+            if (i+1 == datas.count()-1) {
+                datas[i+1].hasSeparator = false;
+            }
+            endResetModel();
+            return;
+        }
+    }
+}
+
+void UserListModel::insertSeparator(const QString &text)
+{
+    for (int i=0; i<datas.count(); ++i) {
+        if (text == datas.at(i).text) {
+            beginResetModel();
+            datas[i].hasSeparator = true;
+            endResetModel();
+            return;
+        }
+    }
+}
+
+void UserListModel::delSeparator(const QString &text)
+{
+    for (int i=0; i<datas.count(); ++i) {
+        if (text == datas.at(i).text) {
+            beginResetModel();
+            datas[i].hasSeparator = false;
+            endResetModel();
+            return;
+        }
+    }
+}
+
+QList<UserListModel::ModelData> UserListModel::getAllDatas() const
+{
+    return datas;
 }
 

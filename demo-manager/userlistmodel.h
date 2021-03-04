@@ -59,7 +59,7 @@ public:
     explicit UserListModel();
     ~UserListModel();
 
-    void initData();
+    void initDatas();
 
     QModelIndex parent(const QModelIndex &child) const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -67,6 +67,15 @@ public:
 
 public:
     void addMenu(const QString &text);
+    void delMenu(const QString &text);
+
+    void moveUpMenu(const QString &text);
+    void moveDownMenu(const QString &text);
+
+    void insertSeparator(const QString &text);
+    void delSeparator(const QString &text);
+
+    QList<ModelData> getAllDatas() const;
 
 private:
     QList<ModelData> datas;

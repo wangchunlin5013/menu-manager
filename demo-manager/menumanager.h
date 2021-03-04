@@ -52,9 +52,14 @@ class MenuManager : public QObject
     Q_DECLARE_PRIVATE(MenuManager)
 public:
     static MenuManager *instance();
-    const QList<ActionData> getAllMenus() const;
-    const QList<ActionData> getUserMenus() const;
 
+    const QList<ActionData> getAllMenus() const;
+    const QStringList getAllMenuTxts() const;
+
+    const QList<ActionData> getUserMenus() const;
+    const QStringList getUserMenuTxts() const;
+
+    void saveUserMenus(const QList<ActionData> &userMenus);
 private:
     void init();
     bool loadSysMenu();

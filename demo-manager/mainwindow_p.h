@@ -48,6 +48,7 @@
 #include <QListView>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QColor>
 
 class MainWindowPrivate : public QWidgetPrivate
 {
@@ -56,11 +57,19 @@ public:
     explicit MainWindowPrivate();
     ~MainWindowPrivate();
 
+    void setItemState(QListWidgetItem *item, bool isEnable);
+    void setBtnsEnable(bool enable);
+
+    void moveUserMenusToAll();
+    void saveUserMenusToFile();
+
     QListView *userView             = nullptr;
     UserListModel *userModel        = nullptr;
     UserListDelegate *userDelegate  = nullptr;
 
     QListWidget *allWidget          = nullptr;
+    QColor txtColor                 = Qt::black;
+    QColor backgroundColor          = Qt::white;
 
     QLabel *allActionsTitle         = nullptr;
     QLabel *userActionsTitle        = nullptr;
