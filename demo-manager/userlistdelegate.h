@@ -37,36 +37,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef USERLISTDELEGATE_H
+#define USERLISTDELEGATE_H
 
-#include <QWidget>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QButtonGroup>
-#include <QPushButton>
-#include <QToolButton>
-#include <QLabel>
+#include <QStyledItemDelegate>
 
-class MainWindowPrivate;
-
-class MainWindow : public QWidget
+class UserListDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(MainWindow)
 public:
-    explicit MainWindow(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-    ~MainWindow();
+    explicit UserListDelegate();
+    ~UserListDelegate();
 
-    void init();
-
-signals:
-
-public slots:
-
-protected:
-    MainWindow(MainWindowPrivate &dd, QWidget* parent, Qt::WindowFlags f);
-
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
-#endif // MAINWINDOW_H
+#endif // USERLISTDELEGATE_H

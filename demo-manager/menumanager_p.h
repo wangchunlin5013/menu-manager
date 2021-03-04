@@ -53,12 +53,15 @@ public:
     ~MenuManagerPrivate();
 
     void parseFile();
+    void saveFile(const QList<ActionData> &menus);
 
     QString configPath;
     bool hasCustom = true;
 
     QList<ActionData> sysMenus;
+    QStringList sysMenuTxts;
     QList<ActionData> userMenus;
+    QStringList userMenuTxts;
 };
 
 #endif // MENUMANAGER_P_H

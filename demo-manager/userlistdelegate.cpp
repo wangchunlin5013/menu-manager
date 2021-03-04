@@ -37,36 +37,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "userlistdelegate.h"
+#include "userlistmodel.h"
 
-#include <QWidget>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QButtonGroup>
-#include <QPushButton>
-#include <QToolButton>
-#include <QLabel>
+#include <QPainter>
 
-class MainWindowPrivate;
-
-class MainWindow : public QWidget
+UserListDelegate::UserListDelegate()
 {
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(MainWindow)
-public:
-    explicit MainWindow(QWidget* parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-    ~MainWindow();
 
-    void init();
+}
 
-signals:
+UserListDelegate::~UserListDelegate()
+{
 
-public slots:
+}
 
-protected:
-    MainWindow(MainWindowPrivate &dd, QWidget* parent, Qt::WindowFlags f);
+void UserListDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    QStyledItemDelegate::paint(painter, option, index);
 
-};
-
-#endif // MAINWINDOW_H
+    if (index.data(UserListModel::Roles::hasSeparator).toBool()) {
+        QPoint leftPoint = option.rect.bottomLeft();
+        QPoint rightPoint = option.rect.bottomRight();
+        painter->drawLine(leftPoint, rightPoint);
+    }
+}

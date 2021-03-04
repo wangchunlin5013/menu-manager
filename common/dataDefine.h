@@ -51,4 +51,13 @@ struct ActionData{
     QString commd;
 };
 
+static const QString MENUGROUP("Action");
+static const QString MENUTYPE("Type");
+static const QString MENUNAME("Name");
+static const QString MENUICON("Icon");
+static const QString MENUTIPS("Tips");
+static const QString MENUCOMMD("Commd");
+static const QString MENUTYPEACTION("Action");
+static const QString MENUTYPESEPARATOR("Separator");
+
 #endif // DATADEFINE_H

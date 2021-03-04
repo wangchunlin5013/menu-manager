@@ -40,6 +40,8 @@
 #ifndef MENUMANAGER_H
 #define MENUMANAGER_H
 
+#include "../common/dataDefine.h"
+
 #include <QObject>
 
 class MenuManagerPrivate;
@@ -49,13 +51,22 @@ class MenuManager : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(MenuManager)
 public:
-    explicit MenuManager(QObject *parent = nullptr);
+    static MenuManager *instance();
 
+    const QList<ActionData> getAllMenus() const;
+    const QStringList getAllMenuTxts() const;
+
+    const QList<ActionData> getUserMenus() const;
+    const QStringList getUserMenuTxts() const;
+
+    void saveUserMenus(const QList<ActionData> &userMenus);
+private:
     void init();
     bool loadSysMenu();
     bool loadUserMenu();
 
 protected:
+    explicit MenuManager(QObject *parent = nullptr);
     MenuManager(MenuManagerPrivate &dd, QObject *parent = nullptr);
 };
 
