@@ -41,17 +41,9 @@
 #define MAINWINDOW_P_H
 
 #include "mainwindow.h"
+#include "../common/dataDefine.h"
 
 #include <private/qwidget_p.h>
-
-enum ActionType { Unknow = 0, Action, Separator};
-struct ActionData{
-    ActionType type;
-    QString name;
-    QString icon;
-    QString tips;
-    QString commd;
-};
 
 class MainWindowPrivate : public QWidgetPrivate
 {

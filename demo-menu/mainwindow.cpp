@@ -84,17 +84,18 @@ void MainWindowPrivate::parseFile()
         hasCustom = false;
         return;
     }
-    for (auto group : groups) {
+    for (int i=0; i<groups.count(); ++i) {
+        QString group = MENUGROUP + QString("%1").arg(i);
         ActionData data;
         setting.beginGroup(group);
-        QString type = setting.value(QString("Type")).toString();
-        if (type == QString("Action")) {
+        QString type = setting.value(MENUTYPE).toString();
+        if (MENUTYPEACTION == type) {
             data.type = ActionType::Action;
-            data.name = setting.value(QString("Name")).toString();
-            data.icon = setting.value(QString("Icon")).toString();
-            data.tips = setting.value(QString("Tips")).toString();
-            data.commd = setting.value(QString("Commd")).toString();
-        } else if (type == QString("Separator")) {
+            data.name = setting.value(MENUNAME).toString();
+            data.icon = setting.value(MENUICON).toString();
+            data.tips = setting.value(MENUTIPS).toString();
+            data.commd = setting.value(MENUCOMMD).toString();
+        } else if (MENUTYPESEPARATOR == type) {
             data.type = ActionType::Separator;
         } else {
             data.type = ActionType::Unknow;
