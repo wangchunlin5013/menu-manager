@@ -43,6 +43,7 @@
 
 #include <QMessageBox>
 #include <QApplication>
+#include <QTimer>
 
 MainWindowPrivate::MainWindowPrivate()
 {
@@ -161,6 +162,20 @@ MainWindow::MainWindow(MainWindowPrivate &dd, QWidget *parent, Qt::WindowFlags f
     :QWidget(dd, parent, f)
 {
     init();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton btn = QMessageBox::question(this, QString("继续监控"), QString("yes:监控系统中的菜单变化并同步更新 \nno:放弃同步，直接退出"), QMessageBox::Yes|QMessageBox::No, QMessageBox::Yes);
+    if (QMessageBox::Yes == btn) {
+        event->ignore();
+        hide();
+        QTimer::singleShot(3000, this, [this](){
+            this->show();
+        });
+    } else {
+        return QWidget::closeEvent(event);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -342,9 +357,11 @@ void MainWindow::init()
         QMessageBox::StandardButton btn = QMessageBox::information(this, QString("提示"), QString("退出前请确保已经保存！"), QMessageBox::Save | QMessageBox::Cancel | QMessageBox::Close);
         if (QMessageBox::Save == btn) {
             d->saveUserMenusToFile();
-            qApp->quit();
+//            qApp->quit();
+            this->close();
         } else if (QMessageBox::Close == btn) {
-            qApp->quit();
+//            qApp->quit();
+            this->close();
         } else {
             return ;
         }

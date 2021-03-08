@@ -67,6 +67,8 @@ public slots:
 protected:
     MainWindow(MainWindowPrivate &dd, QWidget* parent, Qt::WindowFlags f);
 
+    virtual void closeEvent(QCloseEvent *event);
+
 };
 
 #endif // MAINWINDOW_H

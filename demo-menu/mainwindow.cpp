@@ -146,11 +146,9 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
         }
     } else {
         // TODO:根据规范或系统默认实现方式，加载所有菜单
-        menu.addAction(QString("testAction1"));
-        menu.addAction(QString("testAction2"));
-        menu.addSeparator();
-        menu.addAction(QString("testAction3"));
-        menu.addAction(QString("testAction4"));
+        for (int i=0; i<20; i++) {
+            menu.addAction(QString("action%1").arg(i));
+        }
     }
 
     connect(&menu, &QMenu::triggered, this, [=](QAction *action) {
